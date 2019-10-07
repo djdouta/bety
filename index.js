@@ -17,6 +17,7 @@ const normalizePort = port => parseInt(port, 10);
 
 // const PUERTO = 3002;
 const PUERTO = normalizePort(process.env.PORT || 3002);
+app.set("port", PUERTO);
 const dev = app.get(`env`) !== "production";
 
 app.use(cors());
@@ -24,15 +25,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // if (!dev) {
-if (dev) {
-  app.disable("x-powered-by");
-  app.use(compression());
-  // app.use(morgan("common"));
-  app.use(express.static(build));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./build/index.html"));
-  });
-}
+// if (dev) {
+app.disable("x-powered-by");
+app.use(compression());
+// app.use(morgan("common"));
+app.use(express.static(build));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./build/index.html"));
+});
+// }
 
 const server = createServer(app);
 server.listen(PUERTO, error => {
