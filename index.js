@@ -10,13 +10,14 @@ const ipLocal = ip.address();
 const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
 
-const build = path.resolve(__dirname, "../build");
+const build = path.resolve(__dirname, "./build");
 
 const app = express();
 const normalizePort = port => parseInt(port, 10);
 
 // const PUERTO = 3002;
 const PUERTO = normalizePort(process.env.PORT || 3002);
+app.set("port", PUERTO);
 const dev = app.get(`env`) !== "production";
 
 app.use(cors());
@@ -24,15 +25,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // if (!dev) {
-if (dev) {
-  app.disable("x-powered-by");
-  app.use(compression());
-  // app.use(morgan("common"));
-  app.use(express.static(build));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../build/index.html"));
-  });
-}
+// if (dev) {
+app.disable("x-powered-by");
+app.use(compression());
+// app.use(morgan("common"));
+app.use(express.static(build));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./build/index.html"));
+});
+// }
 
 const server = createServer(app);
 server.listen(PUERTO, error => {
@@ -106,10 +107,7 @@ const removeDocument = function(db, collection_name, id, res, callback) {
 };
 
 app.post("/row", function(req, res) {
-  MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       const db = client.db(dbName);
       insertDocuments(db, "row", req.body, res, function() {
@@ -122,10 +120,7 @@ app.post("/row", function(req, res) {
 });
 
 app.post("/getRow", function(req, res) {
-  MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       const db = client.db(dbName);
       findDocuments(db, req.body.pagina, "row", res, function() {
@@ -137,10 +132,7 @@ app.post("/getRow", function(req, res) {
     });
 });
 app.put("/row", function(req, res) {
-  MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       const db = client.db(dbName);
       updateDocument(db, "row", req.body, res, function() {
@@ -152,10 +144,7 @@ app.put("/row", function(req, res) {
     });
 });
 app.delete("/row/*", function(req, res) {
-  MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       const db = client.db(dbName);
       removeDocument(db, "row", req.params["0"], res, function() {
@@ -168,10 +157,7 @@ app.delete("/row/*", function(req, res) {
 });
 
 app.post("/getPagina", function(req, res) {
-  MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       const db = client.db(dbName);
       findDocuments(db, "", "pagina", res, function() {
@@ -184,10 +170,7 @@ app.post("/getPagina", function(req, res) {
 });
 
 app.put("/pagina", function(req, res) {
-  MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       const db = client.db(dbName);
       updateDocument(db, "pagina", req.body, res, function() {
