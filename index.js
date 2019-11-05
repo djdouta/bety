@@ -10,7 +10,7 @@ const ipLocal = ip.address();
 const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
 
-const build = path.resolve(__dirname, "./build");
+const build = path.resolve(__dirname, "../build");
 
 const app = express();
 const normalizePort = port => parseInt(port, 10);
@@ -31,7 +31,7 @@ app.use(compression());
 // app.use(morgan("common"));
 app.use(express.static(build));
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./build/index.html"));
+  res.sendFile(path.resolve(__dirname, "../build/index.html"));
 });
 // }
 
